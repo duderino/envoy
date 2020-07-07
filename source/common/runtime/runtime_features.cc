@@ -31,6 +31,13 @@ constexpr const char* runtime_features[] = {
     "envoy.reloadable_features.outlier_detection_support_for_grpc_status",
     "envoy.reloadable_features.strict_header_validation",
     "envoy.reloadable_features.strict_authority_validation",
+    "envoy.reloadable_features.reject_unsupported_transfer_encodings",
+    "envoy.reloadable_features.strict_method_validation",
+    "envoy.reloadable_features.new_http1_connection_pool_behavior",
+    "envoy.reloadable_features.new_http2_connection_pool_behavior",
+    "envoy.deprecated_features.allow_deprecated_extension_names",
+    "envoy.reloadable_features.ext_authz_http_service_enable_case_sensitive_string_matcher",
+    "envoy.reloadable_features.fix_wildcard_matching",
 };
 
 // This is a list of configuration fields which are disallowed by default in Envoy
