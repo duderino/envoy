@@ -1,18 +1,18 @@
 Version history
 ---------------
 
-1.12.3 (Pending)
-==========================
-* buffer: force copy when appending small slices to OwnedImpl buffer to avoid fragmentation.
-* listeners: fixed issue where :ref:`TLS inspector listener filter <config_listener_filters_tls_inspector>` could have been bypassed by a client using only TLS 1.3.
-* sds: fixed the SDS vulnerability that TLS validation context (e.g., subject alt name or hash) cannot be effectively validated in some cases.
-* http: added HTTP/1.1 flood protection. Can be temporarily disabled using the runtime feature `envoy.reloadable_features.http1_flood_protection`.
-1.12.5 (Pending)
-================
-* http: the :ref:`stream_idle_timeout <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.stream_idle_timeout>`
-  now also defends against an HTTP/2 peer that does not open stream window once an entire response has been buffered to be sent to a downstream client.
-* listener: add runtime support for `per-listener limits <config_listeners_runtime>` on active/accepted connections.
-* overload management: add runtime support for :ref:`global limits <config_overload_manager>` on active/accepted connections.
+1.12.6 (July 7, 2020)
+=====================
+* tls: fixed a bug where wilcard matching for "\*.foo.com" also matched domains of the form "a.b.foo.com". This behavior can be temporarily reverted by setting runtime feature `envoy.reloadable_features.fix_wildcard_matching` to false.
+
+1.12.5 (June 30, 2020)
+======================
+* buffer: fixed CVE-2020-12603 by avoiding fragmentation, and tracking of HTTP/2 data and control frames in the output buffer.
+* http: fixed CVE-2020-12604 by changing :ref:`stream_idle_timeout <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.stream_idle_timeout>`
+  to also defend against an HTTP/2 peer that does not open stream window once an entire response has been buffered to be sent to a downstream client.
+* http: fixed CVE-2020-12605 by including request URL in request header size computation, and rejecting partial headers that exceed configured limits.
+* listener: mitigated CVE-2020-8663 by adding runtime support for :ref:`per-listener limits <config_listeners_runtime>` on active/accepted connections.
+* overload management: mitigated CVE-2020-8663 by adding runtime support for :ref:`global limits <config_overload_manager>` on active/accepted connections.
 
 1.12.4 (June 8, 2020)
 =====================
@@ -87,11 +87,9 @@ Version history
 * http: :ref:`AUTO <envoy_api_enum_value_config.filter.network.http_connection_manager.v2.HttpConnectionManager.CodecType.AUTO>` codec protocol inference now requires the H2 magic bytes to be the first bytes transmitted by a downstream client.
 * http: remove h2c upgrade headers for HTTP/1 as h2c upgrades are currently not supported.
 * http: absolute URL support is now on by default. The prior behavior can be reinstated by setting :ref:`allow_absolute_url <envoy_api_field_core.Http1ProtocolOptions.allow_absolute_url>` to false.
-* http: added strict authority checking. This can be reversed temporarily by setting the runtime feature `envoy.reloadable_features.strict_authority_validation` to false.
 * http: support :ref:`host rewrite <envoy_api_msg_config.filter.http.dynamic_forward_proxy.v2alpha.PerRouteConfig>` in the dynamic forward proxy.
 * http: support :ref:`disabling the filter per route <envoy_api_msg_config.filter.http.grpc_http1_reverse_bridge.v2alpha1.FilterConfigPerRoute>` in the grpc http1 reverse bridge filter.
 * http: added the ability to :ref:`configure max connection duration <envoy_api_field_core.HttpProtocolOptions.max_connection_duration>` for downstream connections.
-* http: trim LWS at the end of header keys, for correct HTTP/1.1 header parsing.
 * listeners: added :ref:`continue_on_listener_filters_timeout <envoy_api_field_Listener.continue_on_listener_filters_timeout>` to configure whether a listener will still create a connection when listener filters time out.
 * listeners: added :ref:`HTTP inspector listener filter <config_listener_filters_http_inspector>`.
 * listeners: added :ref:`connection balancer <envoy_api_field_Listener.connection_balance_config>`
